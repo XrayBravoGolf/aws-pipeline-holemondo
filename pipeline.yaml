@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+  Sample SAM Template for sam-app
+
+Parameters:
+  SecurityStack:
+    Description: Name of an active CloudFormation stack that contains all roles and SGs resources
+    Type: String
+    Default: Security-Roles
+  OAuthToken:
+    Description: OAuthToken to connect to github
+    Type: String
+    NoEcho: true
+
+Resources:
+  BuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties: 
+        Artifacts: 
+          Type: NO_ARTIFACTS
+        Environment: 
+          #TODO env vars
+          ComputeType: BUILD_GENERAL1_SMALL
+          Image: aws/codebuild/amazonlinux2-x86_64-standard:1.0
+          Type: LINUX_CONTAINER
+        ServiceRole: 
+          Fn::ImportValue: !Sub ${SecurityStack}-CodeBuildRole
+        Source:
+          BuildSpec: |
+            version: 0.2
+            phases:
+              pre_build:
+                commands:
+                  - if [ -z "$CODEBUILD_RESOLVED_SOURCE_VERSION" ]; then SRC_HASH=${CODEBUILD_SOURCE_VERSION}; else SRC_HASH=${CODEBUILD_RESOLVED_SOURCE_VERSION}; fi
+                  - VERSION=$(echo ${SRC_HASH} | cut -b 1-8)
+              build:
+                commands:
+                  - ./build-layer.sh #TODO write to abort if VERSION not set
+              post_build:
+                commands:
+                  - ./deploy.sh #TODO write the script
+          GitCloneDepth: 1
+          Location: https://github.com/XrayBravoGolf/aws-pipeline-holemondo.git
+          Type: GITHUB
+
+  HelloWorldCICDPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Location: ascending-devops # s3://ascending-devops/layers/
+        Type: S3
+      RoleArn:
+        Fn::ImportValue: !Sub ${SecurityStack}-CodePipelineRole
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Source
+              ActionTypeId: 
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: 1
+              Configuration:
+                Owner: XrayBravoGolf
+                Repo: aws-pipeline-holemondo
+                Branch: main
+                OAuthToken: !Ref OAuthToken
+              OutputArtifacts:
+                - Name: HelloWorldSource
+              RunOrder: 1
+        - Actions:
+          - Name: BuildAction
+            ActionTypeId:
+              Category: Build
+              Owner: AWS
+              Provider: CodeBuild
+              Version: 1
+            Configuration:
+              ProjectName: !Ref BuildProject
+              PrimarySource: HelloWorldSource
+            InputArtifacts:
+              - Name: HelloWorldSource
+            RunOrder: 1
+          Name: BuildProject
