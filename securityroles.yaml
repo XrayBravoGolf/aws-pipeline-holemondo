@@ -1,0 +1,71 @@
+Resources:
+  CodeBuildRole:
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "codebuild.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Policies:
+        -
+          PolicyName: "CodeBuildRolePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: 
+                  - "ec2:*"
+                  - "cloudwatch:*"
+                  - "s3:*"
+                  - "logs:*"
+                  - "ecr:*"
+                  - "cloudfront:*"
+                  - "cloudformation:*"
+                  - "iam:*"
+                  - "lambda:*"
+                  - "events:*"
+                  - "apigateway:*"
+                  - "es:*"
+                  - "sqs:*"
+                  - "secretsmanager:*"
+                Resource: "*"
+  CodePipelineRole:
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "codepipeline.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Policies:
+        -
+          PolicyName: "CodePipelineRolePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: 
+                  - "s3:*"
+                  - "cloudformation:*"
+                  - "codebuild:*"
+                Resource: "*"
+Outputs:
+  CodePipelineRole:
+    Description: "IAM Role created for running CodePipelines"
+    Value: !GetAtt CodePipelineRole.Arn
+  CodeBuildRole:
+    Description: "IAM Role created for running CodeBuild projects"
+    Value: !GetAtt CodeBuildRole.Arn
