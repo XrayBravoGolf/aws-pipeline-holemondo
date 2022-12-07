@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   sam-app
 
-  Sample SAM Template for sam-app
+  My hello world stack for pipeline
 
 Parameters:
   SecurityStack:
@@ -38,10 +38,10 @@ Resources:
                   - VERSION=$(echo ${SRC_HASH} | cut -b 1-8)
               build:
                 commands:
-                  - ./build-layer.sh #TODO write to abort if VERSION not set
+                  - ./build-layer.sh ${VERSION} #TODO write to abort if VERSION not set
               post_build:
                 commands:
-                  - ./deploy.sh #TODO write the script
+                  - ./deploy.sh ${VERSION}
           GitCloneDepth: 1
           Location: https://github.com/XrayBravoGolf/aws-pipeline-holemondo.git
           Type: GITHUB
@@ -50,7 +50,7 @@ Resources:
     Type: AWS::CodePipeline::Pipeline
     Properties:
       ArtifactStore:
-        Location: ascending-devops # s3://ascending-devops/layers/
+        Location: xiaoyao-sandbox
         Type: S3
       RoleArn:
         Fn::ImportValue: !Sub ${SecurityStack}-CodePipelineRole

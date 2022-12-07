@@ -1,6 +1,7 @@
 set -eo pipefail
-VERSION=1145141919
 pipenv lock
-pip install  --target ./hello_world -r requirements.txt
-zip -r ${VERSION}.zip ./hello_world
-aws s3 cp ${VERSION}.zip s3://ascending-devops/layers/
+pip3 install  --target ./hello_world_dependencies -r requirements.txt
+zip -r ${VERSION}.zip ./hello_world_dependencies
+aws s3 cp ${VERSION}.zip s3://xiaoyao-sandbox/layers/
+rm -rf ./hello_world_dependencies
+rm -f ${VERSION}.zip

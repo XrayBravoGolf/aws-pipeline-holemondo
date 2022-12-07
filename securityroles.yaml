@@ -63,9 +63,13 @@ Resources:
                   - "codebuild:*"
                 Resource: "*"
 Outputs:
-  CodePipelineRole:
-    Description: "IAM Role created for running CodePipelines"
-    Value: !GetAtt CodePipelineRole.Arn
   CodeBuildRole:
-    Description: "IAM Role created for running CodeBuild projects"
-    Value: !GetAtt CodeBuildRole.Arn
+    Value: !GetAtt 'CodeBuildRole.Arn'
+    Description: CodeBuildRole arn
+    Export: 
+      Name: !Sub "${AWS::StackName}-CodeBuildRole"
+  CodePipelineRole:
+    Value: !GetAtt 'CodePipelineRole.Arn'
+    Description: CodePipelineRole arn
+    Export: 
+      Name: !Sub "${AWS::StackName}-CodePipelineRole"
