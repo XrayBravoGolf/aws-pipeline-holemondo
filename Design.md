@@ -14,5 +14,12 @@
  - Deploy via CI/CD with hand build layer package
 
  - Build using CodeBuild and hand over the layer package to CodePipeline
- 
+
  - Make sure variables, versioning, etc. are not hardcoded
+
+ - Explicit definition of API
+ - Define API in OpenAPI 3.0 (Maybe)
+ - Add auth lambda function
+ - specify auth lambda in api
+ - specify auth lambda in transaction lambda
+ 
