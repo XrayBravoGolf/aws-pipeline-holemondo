@@ -42,4 +42,4 @@ class TestApiGateway:
         response = requests.get(api_gateway_url)
 
         assert response.status_code == 200
-        assert response.json() == {"message": "hello world 3"}
+        assert response.json() == {"message": "hello world 4"}
