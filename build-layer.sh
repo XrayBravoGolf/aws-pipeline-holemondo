@@ -1,7 +1,7 @@
 set -eo pipefail
 pipenv lock
-pip3 install  --target ./hello_world_dependencies -r requirements.txt
-zip -r ${VERSION}.zip ./hello_world_dependencies
+pip3 install  --target ./python -r requirements.txt
+zip -r ${VERSION}.zip ./python
 aws s3 cp ${VERSION}.zip s3://xiaoyao-sandbox/layers/
-rm -rf ./hello_world_dependencies
+rm -rf ./python
 rm -f ${VERSION}.zip
