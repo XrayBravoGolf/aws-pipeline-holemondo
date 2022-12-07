@@ -12,5 +12,7 @@
  - - Configure the source stage form GitHub
  
  - Deploy via CI/CD with hand build layer package
+
  - Build using CodeBuild and hand over the layer package to CodePipeline
+ 
  - Make sure variables, versioning, etc. are not hardcoded
