@@ -1,3 +1,4 @@
 -r hello_world/requirements.txt
 # -r tests/requirements.txt
+-r authorization/requirements.txt
 requests

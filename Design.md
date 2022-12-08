@@ -4,11 +4,13 @@
  - Implement logic in Python (hello world)
 
  - Write script that puts in a zip layer package
-  WIP
+  
  - Manually deploy on CLI
 
  - Configure deployment with CloudFormation in yaml
+
  - - IAM role with specific policy
+
  - - Configure the source stage form GitHub
  
  - Deploy via CI/CD with hand build layer package
@@ -17,9 +19,10 @@
 
  - Make sure variables, versioning, etc. are not hardcoded
 
- - Explicit definition of API
- - Define API in OpenAPI 3.0 (Maybe)
- - Add auth lambda function
- - specify auth lambda in api
- - specify auth lambda in transaction lambda
+ - Explicit definition of API\
  
+ - Add auth lambda function
+
+ - specify auth lambda in api
+
+ - specify auth lambda in transaction lambda (commented out for the default)
