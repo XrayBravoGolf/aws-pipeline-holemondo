@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     policy.region = splitArn[3]
     policy.stage = apiGatewayArnTmp[1]
 
-    allowTable = {"principalId 0":{"/event":"GET"}}
+    allowTable = {"principalId 0":{"/hello":"GET"}}
 
     for k,v in allowTable[principalId].items():
         policy.allowMethod(v, k) # "GET", "/event"
