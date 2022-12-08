@@ -19,7 +19,7 @@ def lambda_handler(event, context):
 
     allowTable = {"principalId 0":{"/event":"GET"}}
 
-    for k,v in allowTable[principalId]:
+    for k,v in allowTable[principalId].items():
         policy.allowMethod(v, k) # "GET", "/event"
 
     authResponse = policy.build()
