@@ -69,6 +69,7 @@ Resources:
       CodeUri: authorization/
       Handler: auth.lambda_handler
       Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.8
 
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -87,7 +88,7 @@ Resources:
             Method: get
             RestApiId: !Ref HelloWorldApi
             # Using the default authorizer instead
-            
+
             # Auth:
             #   Authorizer: LambdaAuthorizer
       Layers:
